@@ -1,46 +1,31 @@
 import React, { useState } from 'react';
-
+import { addDoc, collection } from 'firebase/firestore';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db } from './firebase';
 const MyForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    image: null, // Holds the selected image file
-  });
+  const [input, setInputs] = useState({});
 
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
-
-    if (type === 'file') {
-      // Handle file input separately
-      const file = e.target.files[0];
-      setFormData({
-        ...formData,
-        [name]: file,
-      });
-
-      // Perform additional actions if needed, e.g., preview the image
-      // You can use FileReader to read the selected file and display a preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Update state or perform other actions with the preview URL
-        // Example: setPreviewUrl(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      // Handle other input types
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
+    const name = e.target.name;
+    const value = e.target.value;
+    setInputs(values => ({...values, [name]: value}))
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission, including the image file (formData.image)
-    console.log('Form submitted:');
-    alert(formData.image);
-  };
+
+    try{
+      const docRef = await addDoc(collection(db, "userInfo"),{
+        name : input.name,
+        email : input.email
+      });
+      alert(docRef.id);
+    }
+    catch (e){
+      alert(e);
+    }
+ 
+  }; 
 
   return (
     <form onSubmit={handleSubmit}>
@@ -49,7 +34,7 @@ const MyForm = () => {
         <input
           type="text"
           name="name"
-          value={formData.name}
+          value={input.name}
           onChange={handleChange}
         />
       </label>
@@ -59,28 +44,10 @@ const MyForm = () => {
         <input
           type="email"
           name="email"
-          value={formData.email}
+          value={input.email}
           onChange={handleChange}
         />
       </label>
-      <br />
-      <label>
-        Upload Image:
-        <input
-          type="file"
-          name="image"
-          accept="image/*" // Specify accepted file types
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      {formData.image && (
-        <img
-          src={URL.createObjectURL(formData.image)}
-          alt="Preview"
-          style={{ maxWidth: '200px', maxHeight: '200px' }}
-        />
-      )}
       <br />
       <button type="submit">Submit</button>
     </form>
