@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db } from './firebase';
+import { getStorage, ref,  uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage} from './firebase';
+
+
 const MyForm = () => {
   const [input, setInputs] = useState({});
 
   const handleChange = (e) => {
     const name = e.target.name;
-    const value = e.target.value;
+    const value = e.target.type === 'file' ? e.target.files[0] : e.target.value;
+
     setInputs(values => ({...values, [name]: value}))
   };
 
@@ -15,11 +18,19 @@ const MyForm = () => {
     e.preventDefault();
 
     try{
+      const storageRef = ref(storage, `images/${input.image.name}`);
+      await uploadBytes(storageRef, input.image);
+
+      const imageURL = await getDownloadURL(storageRef);
+
+
+
       const docRef = await addDoc(collection(db, "userInfo"),{
         name : input.name,
-        email : input.email
+        email : input.email,
+        image : imageURL
       });
-      alert(docRef.id);
+      alert(input.image);
     }
     catch (e){
       alert(e);
@@ -49,6 +60,14 @@ const MyForm = () => {
         />
       </label>
       <br />
+      <label>
+        Image:
+        <input
+        type = "file"
+        name = "image"
+        onChange={handleChange}
+        />
+      </label>
       <button type="submit">Submit</button>
     </form>
   );
