@@ -12,7 +12,7 @@ li {
   margin-bottom: 10px;
   border: 1px solid #ccc; /* Border color for each item */
   padding: 10px;
-  display: flex;
+  display: block;
   align-items: center;
   max-width: 300px; /* Adjust the max-width for each list item */
 }
@@ -42,6 +42,10 @@ div {
 }
 
 .user-image {
-  max-width: 150px;
+  max-width: 100px;
   max-height: 150px;
+}
+
+.title{
+  text-align: center;
 }

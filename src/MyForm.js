@@ -26,10 +26,19 @@ const MyForm = () => {
 
 
       const docRef = await addDoc(collection(db, "userInfo"),{
-        name : input.name,
-        email : input.email,
+        name : input.productname,
+        price : input.price,
+        description: input.description,
         image : imageURL
       });
+      
+      setInputs({
+      productname: '',
+      price: '',
+      description: '',
+      image: null,
+      });
+      
       alert(input.image);
     }
     catch (e){
@@ -41,25 +50,34 @@ const MyForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Name:
+        Product Name:
         <input
           type="text"
-          name="name"
-          value={input.name}
+          name="productname"
+          value={input.productname}
           onChange={handleChange}
         />
       </label>
       <br />
       <label>
-        Email:
+        Price:
         <input
-          type="email"
-          name="email"
-          value={input.email}
+          type="text"
+          name="price"
+          value={input.price}
           onChange={handleChange}
         />
       </label>
       <br />
+      <label>
+        Description:
+        <input
+          type = "text"
+          name = "description"
+          value = {input.description}
+          onChange = {handleChange}
+        />
+      </label>
       <label>
         Image:
         <input
