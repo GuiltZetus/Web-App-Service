@@ -8,12 +8,12 @@ const Dashboard = () => {
     <Router>
       <div>
         <nav>
-          <ul>
-            <li>
-              <Link to="/myform">MyForm</Link>
+          <ul >
+            <li className='nav-item'>
+              <Link to="/myform">Add a product</Link>
             </li>
-            <li>
-              <Link to="/mylist">MyList</Link>
+            <li className='nav-item'>
+              <Link to="/mylist">Item List</Link>
             </li>
           </ul>
         </nav>

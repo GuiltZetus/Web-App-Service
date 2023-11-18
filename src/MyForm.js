@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
-import { getStorage, ref,  uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage} from './firebase';
-
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from './firebase';
+import './MyForm.css'; // Import your CSS file
 
 const MyForm = () => {
   const [input, setInputs] = useState({});
@@ -11,44 +11,40 @@ const MyForm = () => {
     const name = e.target.name;
     const value = e.target.type === 'file' ? e.target.files[0] : e.target.value;
 
-    setInputs(values => ({...values, [name]: value}))
+    setInputs((values) => ({ ...values, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try{
+    try {
       const storageRef = ref(storage, `images/${input.image.name}`);
       await uploadBytes(storageRef, input.image);
 
       const imageURL = await getDownloadURL(storageRef);
 
-
-
-      const docRef = await addDoc(collection(db, "userInfo"),{
-        name : input.productname,
-        price : input.price,
+      const docRef = await addDoc(collection(db, 'userInfo'), {
+        productname: input.productname,
+        price: input.price,
         description: input.description,
-        image : imageURL
+        imageURL: imageURL,
       });
-      
+
       setInputs({
-      productname: '',
-      price: '',
-      description: '',
-      image: null,
+        productname: '',
+        price: '',
+        description: '',
+        image: null,
       });
-      
+
       alert(input.image);
-    }
-    catch (e){
+    } catch (e) {
       alert(e);
     }
- 
-  }; 
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="my-form" onSubmit={handleSubmit}>
       <label>
         Product Name:
         <input
@@ -56,6 +52,7 @@ const MyForm = () => {
           name="productname"
           value={input.productname}
           onChange={handleChange}
+          className="form-input"
         />
       </label>
       <br />
@@ -66,27 +63,32 @@ const MyForm = () => {
           name="price"
           value={input.price}
           onChange={handleChange}
+          className="form-input"
         />
       </label>
       <br />
       <label>
         Description:
         <input
-          type = "text"
-          name = "description"
-          value = {input.description}
-          onChange = {handleChange}
+          type="text"
+          name="description"
+          value={input.description}
+          onChange={handleChange}
+          className="form-input"
         />
       </label>
       <label>
         Image:
         <input
-        type = "file"
-        name = "image"
-        onChange={handleChange}
+          type="file"
+          name="image"
+          onChange={handleChange}
+          className="form-input"
         />
       </label>
-      <button type="submit">Submit</button>
+      <button type="submit" className="form-button">
+        Submit
+      </button>
     </form>
   );
 };

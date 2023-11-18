@@ -1,78 +1,106 @@
+// MyList.js
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db, storage } from './firebase';
+import './MyList.css';
 import { ref, deleteObject } from 'firebase/storage';
 import UpdateForm from './UpdateForm';
-import './MyList.css';
 
 const MyList = () => {
   const [data, setData] = useState([]);
   const [updateItemId, setUpdateItemId] = useState(null);
+  const [searchInput, setSearchInput] = useState('');
 
+  // Fetch data from db
   useEffect(() => {
     const fetchData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'userInfo'));
-        const fetchedData = querySnapshot.docs.map((doc) => {
+        const fetchedData = [];
+
+        querySnapshot.forEach((doc) => {
           const data = doc.data();
-          return {
+          fetchedData.push({
             id: doc.id,
             productname: data.productname,
             price: data.price,
             description: data.description,
             imageURL: data.image,
-          };
+          });
         });
+
         setData(fetchedData);
       } catch (error) {
         console.error('Error fetching data:', error.message);
       }
     };
-
     fetchData();
   }, []);
 
+  // Update Data function
+  const handleUpdate = async (id, updatedData) => {
+    try {
+      // Update user information in Firestore
+      await updateDoc(doc(db, 'userInfo', id), updatedData);
+
+      // Fetch updated data
+      const querySnapshot = await getDocs(collection(db, 'userInfo'));
+      const updatedDataArray = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        updatedDataArray.push({
+          id: doc.id,
+          productname: data.productname,
+          price: data.price,
+          description: data.description,
+          imageURL: data.image,
+        });
+      });
+
+      // Update the state to reflect the changes
+      setData(updatedDataArray);
+      setUpdateItemId(null); // Reset the updateItemId after updating
+    } catch (error) {
+      console.error('Error updating data:', error.message);
+    }
+  };
+
+  // Delete Data function
   const handleDelete = async (id, imageURL) => {
     try {
+      // Delete user information from Firestore
       await deleteDoc(doc(db, 'userInfo', id));
 
+      // Delete image from storage
       const imageRef = ref(storage, imageURL);
       await deleteObject(imageRef);
 
+      // Update the state to reflect the changes
       setData((prevData) => prevData.filter((item) => item.id !== id));
     } catch (error) {
       console.error('Error deleting data:', error.message);
     }
   };
 
-  const handleUpdate = async (id, updatedData) => {
-    try {
-      await updateDoc(doc(db, 'userInfo', id), updatedData);
-
-      const querySnapshot = await getDocs(collection(db, 'userInfo'));
-      const updatedDataArray = querySnapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          productname: data.productname,
-          price: data.price,
-          description: data.description,
-          imageURL: data.image,
-        };
-      });
-
-      setData(updatedDataArray);
-      setUpdateItemId(null);
-    } catch (error) {
-      console.error('Error updating data:', error.message);
-    }
-  };
+  // Filtered data based on search input
+  const filteredData = data.filter((item) =>
+    item.productname.toLowerCase().includes(searchInput.toLowerCase())
+  );
 
   return (
     <div className="my-list-container">
       <h1 className="title">User Information List</h1>
-      <ul>
-        {data.map((item) => (
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by Product Name"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+        />
+      </div>
+      <ul className='item-list'>
+        {filteredData.map((item) => (
           <li key={item.id} className="list-item">
             <div className="user-info">
               <strong>Product Name:</strong> {item.productname}
