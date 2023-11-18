@@ -86,9 +86,10 @@ const MyForm = () => {
           className="form-input"
         />
       </label>
-      <button type="submit" className="form-button">
+      <button type="submit" className="form-button" >
         Submit
       </button>
+
     </form>
   );
 };
