@@ -25,7 +25,7 @@ const MyList = () => {
             productname: data.productname,
             price: data.price,
             description: data.description,
-            imageURL: data.image,
+            imageURL: data.imageURL,
           });
         });
 
