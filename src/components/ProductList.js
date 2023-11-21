@@ -4,7 +4,7 @@ import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firesto
 import { db, storage } from '../services/firebase';
 import '../styles/MyList.css';
 import { ref, deleteObject } from 'firebase/storage';
-import UpdateForm from './UpdateForm';
+import UpdateProductForm from './UpdateProductForm';
 
 const MyList = () => {
   const [data, setData] = useState([]);
@@ -125,7 +125,7 @@ const MyList = () => {
               <button onClick={() => setUpdateItemId(item.id)}>Update</button>
             </div>
             {updateItemId === item.id && (
-              <UpdateForm data={item} onUpdate={(updatedData) => handleUpdate(item.id, updatedData)} />
+              <UpdateProductForm data={item} onUpdate={(updatedData) => handleUpdate(item.id, updatedData)} />
             )}
           </li>
         ))}

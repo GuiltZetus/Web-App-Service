@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
-import MyForm from './MyForm'; // Replace with the correct path to your MyForm component
-import MyList from './MyList'; // Replace with the correct path to your MyList component
+import AddProductForm from './AddProductForm'; // Replace with the correct path to your MyForm component
+import ProductList from './ProductList'; // Replace with the correct path to your MyList component
 import '../styles/Dashboard.css';
 const Dashboard = () => {
   return (
@@ -10,10 +10,10 @@ const Dashboard = () => {
         <nav>
           <ul >
             <li className='nav-item'>
-              <Link to="/myform">Add a product</Link>
+              <Link to="/addproductform">Add a product</Link>
             </li>
             <li className='nav-item'>
-              <Link to="/mylist">Item List</Link>
+              <Link to="/productlist">Item List</Link>
             </li>
           </ul>
         </nav>
@@ -21,8 +21,8 @@ const Dashboard = () => {
         <hr />
 
         <Routes>
-          <Route path="/myform" element={<MyForm />} />
-          <Route path="/mylist" element={<MyList />} />
+          <Route path="/addproductform" element={<AddProductForm />} />
+          <Route path="/productlist" element={<ProductList />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </div>
