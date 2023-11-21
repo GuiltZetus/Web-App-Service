@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from './firebase';
-import './MyForm.css'; // Import your CSS file
+import { db, storage } from '../services/firebase';
+import '../styles/MyForm.css'; // Import your CSS file
 
 const MyForm = () => {
   const [input, setInputs] = useState({});

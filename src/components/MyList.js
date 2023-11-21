@@ -1,8 +1,8 @@
 // MyList.js
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { db, storage } from './firebase';
-import './MyList.css';
+import { db, storage } from '../services/firebase';
+import '../styles/MyList.css';
 import { ref, deleteObject } from 'firebase/storage';
 import UpdateForm from './UpdateForm';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import MyForm from './MyForm'; // Replace with the correct path to your MyForm component
 import MyList from './MyList'; // Replace with the correct path to your MyList component
-import './Dashboard.css';
+import '../styles/Dashboard.css';
 const Dashboard = () => {
   return (
     <Router>

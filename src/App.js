@@ -1,7 +1,7 @@
 import './App.css';
-import MyForm  from './MyForm';
-import MyList from './MyList';
-import Dashboard from './Dashboard';
+import MyForm  from './components/MyForm';
+import MyList from './components/MyList';
+import Dashboard from './components/Dashboard';
 function App() {
   console.log("app is running now");
   return (
