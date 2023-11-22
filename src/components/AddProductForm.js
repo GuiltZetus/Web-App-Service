@@ -6,7 +6,7 @@ import '../styles/MyForm.css'; // Import your CSS file
 
 const MyForm = () => {
   const [input, setInputs] = useState({});
-
+ // this is a small changes for purely testing purposes
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.type === 'file' ? e.target.files[0] : e.target.value;
