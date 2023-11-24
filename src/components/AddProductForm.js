@@ -3,8 +3,9 @@ import { addDoc, collection } from 'firebase/firestore';
 import {  ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../services/firebase';
 import '../styles/MyForm.css'; // Import your CSS file
+import Modal from 'react-modal';
 
-const MyForm = () => {
+const AddProductForm = ({setModalIsOpen}) => {
   const [input, setInputs] = useState({});
 
   const handleChange = (e) => {
@@ -89,9 +90,9 @@ const MyForm = () => {
       <button type="submit" className="form-button" >
         Submit
       </button>
-
+      <button className="form-button" type="button" onClick={() => setModalIsOpen(false)}>Close</button>
     </form>
   );
 };
 
-export default MyForm;
+export default AddProductForm;

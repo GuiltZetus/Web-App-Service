@@ -22,6 +22,7 @@
   cursor: pointer;
   justify-content: center;
   align-content: center;
+  margin-left : 10px;
 }
 
 .form-button:hover {

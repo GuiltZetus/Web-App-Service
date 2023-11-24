@@ -1,15 +1,20 @@
-// MyList.js
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db, storage } from '../services/firebase';
-import '../styles/MyList.css';
+import '../styles/ProductList.css';
 import { ref, deleteObject } from 'firebase/storage';
 import UpdateProductForm from './UpdateProductForm';
+import Modal from 'react-modal';
+import AddProductForm from './AddProductForm';
+import '../styles/Modal.css';
 
-const MyList = () => {
+Modal.setAppElement('#root');
+
+const ProductList = () => {
   const [data, setData] = useState([]);
   const [updateItemId, setUpdateItemId] = useState(null);
   const [searchInput, setSearchInput] = useState('');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   // Fetch data from db
   useEffect(() => {
@@ -89,8 +94,8 @@ const MyList = () => {
   );
 
   return (
-    <div className="my-list-container">
-      <h1 className="title">User Information List</h1>
+    <div className="product-list-container">
+      <h1 className="title">Product Listing</h1>
       <div className="search-bar">
         <input
           type="text"
@@ -98,40 +103,53 @@ const MyList = () => {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
+        <button onClick = {() => setModalIsOpen(true)}>Add Product</button>
       </div>
       <ul className='item-list'>
+        <div className= 'item-list-categories'>
+          <span>ID</span>
+          <span>Name</span>
+          <span>Price</span>
+          <span>Description</span>
+          <span>Add Date</span>
+          <span>Stock</span>
+          <span>Edit</span>
+        </div>
         {filteredData.map((item) => (
           <li key={item.id} className="list-item">
-            <div className="user-info">
-              <strong>Product Name:</strong> {item.productname}
-            </div>
-            <div className="user-info">
-              <strong>Price:</strong> {item.price}
-            </div>
-            <div>
-              <strong>Description:</strong> {item.description}
-            </div>
-            <div>
-              <img
-                src={item.imageURL}
-                alt={`User ${item.productname} Image`}
-                className="user-image"
-              />
-            </div>
-            <div className="action-buttons">
-              <button onClick={() => handleDelete(item.id, item.imageURL)}>
-                Delete
-              </button>
-              <button onClick={() => setUpdateItemId(item.id)}>Update</button>
-            </div>
-            {updateItemId === item.id && (
-              <UpdateProductForm data={item} onUpdate={(updatedData) => handleUpdate(item.id, updatedData)} />
-            )}
+            <span>{item.id}</span>
+            <span>{item.productname}</span>
+            <span>{item.price}</span>
+            <span>{item.description}</span>
+            <span></span> 
+            <span></span> 
+            <span>
+              <div className="action-buttons">
+                <button onClick={() => handleDelete(item.id, item.imageURL)}>Delete</button>
+                <button onClick={() => setUpdateItemId(item.id)}>Update</button>
+                {updateItemId === item.id && (
+                  <UpdateProductForm data={item} onUpdate={(updatedData) => handleUpdate(item.id, updatedData)} />
+                )}
+                <Modal isOpen = {modalIsOpen} 
+                  onRequestClose = {() => setModalIsOpen(false)}
+                  contentLabel = "Add Product"
+                  overlayClassName= "react-modal-overlay"
+                  className = "react-modal-content"
+                >
+                  <>
+                    <AddProductForm setModalIsOpen = {setModalIsOpen}/>
+                  </>
+                </Modal>
+
+              </div>
+            </span> 
           </li>
         ))}
       </ul>
     </div>
+      // function for button 
+
   );
 };
 
-export default MyList;
+export default ProductList;

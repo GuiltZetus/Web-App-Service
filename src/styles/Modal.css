@@ -1,0 +1,13 @@
+.react-modal-overlay {
+  background-color : rgba(0,0,0,0.75);
+}
+
+.react-modal-content {
+  background-color : white;
+  position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ width: fit-content; /* Set a specific width */
+ height: fit-content; /* Set a specific height */
+}
