@@ -15,6 +15,21 @@ const ProductList = () => {
   const [updateItemId, setUpdateItemId] = useState(null);
   const [searchInput, setSearchInput] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [ModalType,setModalType] = useState(null);
+
+  const openModal = (type, itemID) => {
+    setModalType(type);
+    setModalIsOpen(true);
+    if ( type === 'updateProduct'){
+      setUpdateItemId(itemID);
+    }
+  };
+
+  const closeModal = () => {
+    setModalType(null);
+    setModalIsOpen(false);
+  };
+
 
   // Fetch data from db
   useEffect(() => {
@@ -30,6 +45,7 @@ const ProductList = () => {
             productname: data.productname,
             price: data.price,
             description: data.description,
+            stock: data.stock,
             imageURL: data.imageURL,
           });
         });
@@ -59,6 +75,7 @@ const ProductList = () => {
           productname: data.productname,
           price: data.price,
           description: data.description,
+          stock: data.stock,
           imageURL: data.image,
         });
       });
@@ -103,7 +120,7 @@ const ProductList = () => {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
-        <button onClick = {() => setModalIsOpen(true)}>Add Product</button>
+        <button onClick = {() => openModal('addProduct')}>Add Product</button>
       </div>
       <ul className='item-list'>
         <div className= 'item-list-categories'>
@@ -122,25 +139,36 @@ const ProductList = () => {
             <span>{item.price}</span>
             <span>{item.description}</span>
             <span></span> 
-            <span></span> 
+            <span>{item.stock}</span> 
             <span>
               <div className="action-buttons">
                 <button onClick={() => handleDelete(item.id, item.imageURL)}>Delete</button>
-                <button onClick={() => setUpdateItemId(item.id)}>Update</button>
-                {updateItemId === item.id && (
-                  <UpdateProductForm data={item} onUpdate={(updatedData) => handleUpdate(item.id, updatedData)} />
-                )}
-                <Modal isOpen = {modalIsOpen} 
-                  onRequestClose = {() => setModalIsOpen(false)}
+                <button onClick={() => openModal('updateProduct', item.id)}>Update</button>
+                {updateItemId === item.id &&  ModalType==='updateProduct'}
+                 {/* AddProductForm Modal */}
+                <Modal isOpen = {modalIsOpen && ModalType === 'addProduct'} 
+                  onRequestClose = {closeModal}
                   contentLabel = "Add Product"
                   overlayClassName= "react-modal-overlay"
                   className = "react-modal-content"
                 >
                   <>
-                    <AddProductForm setModalIsOpen = {setModalIsOpen}/>
+                    <AddProductForm setModalIsOpen = {closeModal}/>
                   </>
                 </Modal>
-
+                 {/* UpdateForm Modal */}
+                <Modal isOpen = {modalIsOpen && ModalType === 'updateProduct'} 
+                  onRequestClose = {closeModal}
+                  contentLabel = "Update Product"
+                  overlayClassName= "react-modal-overlay"
+                  className = "react-modal-content"
+                >
+                  <>
+                    <UpdateProductForm data={data.find((item) => item.id === updateItemId)}
+                      onUpdate={(updatedData) => handleUpdate(item.id, updatedData)}
+                      setModalIsOpen = {closeModal}/>
+                  </>
+                </Modal>
               </div>
             </span> 
           </li>

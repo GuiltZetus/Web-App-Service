@@ -5,7 +5,7 @@ import { db, storage } from '../services/firebase';
 import '../styles/MyForm.css'; // Import your CSS file
 import Modal from 'react-modal';
 
-const AddProductForm = ({setModalIsOpen}) => {
+const AddProductForm = ({setModalIsOpen, modalIsOpen}) => {
   const [input, setInputs] = useState({});
 
   const handleChange = (e) => {
@@ -13,6 +13,10 @@ const AddProductForm = ({setModalIsOpen}) => {
     const value = e.target.type === 'file' ? e.target.files[0] : e.target.value;
 
     setInputs((values) => ({ ...values, [name]: value }));
+  };
+
+  const handleCloseModal = () => {
+      setModalIsOpen(false);
   };
 
   const handleSubmit = async (e) => {
@@ -28,6 +32,7 @@ const AddProductForm = ({setModalIsOpen}) => {
         productname: input.productname,
         price: input.price,
         description: input.description,
+        stock: input.stock,
         imageURL: imageURL,
       });
 
@@ -35,6 +40,7 @@ const AddProductForm = ({setModalIsOpen}) => {
         productname: '',
         price: '',
         description: '',
+        stock : '',
         image: null,
       });
 
@@ -79,6 +85,17 @@ const AddProductForm = ({setModalIsOpen}) => {
         />
       </label>
       <label>
+        Stock:
+        <input 
+          type="text"
+          name="image"
+          value={input.stock}
+          onChange={handleChange}
+          className="form-input"
+        />
+      </label>
+
+      <label>
         Image:
         <input
           type="file"
@@ -90,7 +107,7 @@ const AddProductForm = ({setModalIsOpen}) => {
       <button type="submit" className="form-button" >
         Submit
       </button>
-      <button className="form-button" type="button" onClick={() => setModalIsOpen(false)}>Close</button>
+      <button className="form-button" type="button" onClick={handleCloseModal}>Cancel</button>
     </form>
   );
 };

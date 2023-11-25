@@ -1,7 +1,9 @@
 // UpdateForm.js
 import React, { useState } from 'react';
+import Modal from 'react-modal';
+import '../styles/MyForm.css';
 
-const UpdateForm = ({ data, onUpdate, onCancel }) => {
+const UpdateForm = ({ data, onUpdate, onCancel, setModalIsOpen, modalIsOpen }) => {
   const [updatedData, setUpdatedData] = useState(data);
 
   const handleChange = (e) => {
@@ -14,13 +16,14 @@ const UpdateForm = ({ data, onUpdate, onCancel }) => {
     onUpdate(updatedData);
   };
 
-  const handleCancel = () => {
-    onCancel(); // Call the onCancel function passed as a prop
+  const handleCloseModal = () => {
+      setModalIsOpen(false);
   };
+
 
   return (
     <div className="update-form-container">
-      <form onSubmit={handleSubmit}>
+      <form className="my-form" onSubmit={handleSubmit}>
         <label>
           Product Name:
           <input
@@ -50,8 +53,17 @@ const UpdateForm = ({ data, onUpdate, onCancel }) => {
             onChange={handleChange}
           />
         </label>
+        <label>
+          Stock:
+          <input
+          type = "text"
+          name = "stock"
+          value = {updatedData.stock}
+          onChange={handleChange}
+          />
+        </label>
         <button type="submit">Update</button>
-        <button type="button" onClick={handleCancel}>Cancel</button>
+        <button type="button" onClick={handleCloseModal}>Cancel</button>
       </form>
     </div>
   );
