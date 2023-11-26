@@ -88,13 +88,12 @@ const AddProductForm = ({setModalIsOpen, modalIsOpen}) => {
         Stock:
         <input 
           type="text"
-          name="image"
+          name="stock"
           value={input.stock}
           onChange={handleChange}
           className="form-input"
         />
       </label>
-
       <label>
         Image:
         <input
