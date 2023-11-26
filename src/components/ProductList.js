@@ -38,7 +38,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'userInfo'));
+        const querySnapshot = await getDocs(collection(db, 'product'));
         const fetchedData = [];
 
         querySnapshot.forEach((doc) => {
@@ -65,7 +65,7 @@ const ProductList = () => {
   const handleUpdate = async (id, updatedData) => {
     try {
       // Update user information in Firestore
-      await updateDoc(doc(db, 'userInfo', id), updatedData);
+      await updateDoc(doc(db, 'product', id), updatedData);
 
       // Fetch updated data
       const querySnapshot = await getDocs(collection(db, 'userInfo'));
@@ -95,7 +95,7 @@ const ProductList = () => {
   const handleDelete = async (id, imageURL) => {
     try {
       // Delete user information from Firestore
-      await deleteDoc(doc(db, 'userInfo', id));
+      await deleteDoc(doc(db, 'product', id));
 
       // Delete image from storage
       const imageRef = ref(storage, imageURL);

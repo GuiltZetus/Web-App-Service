@@ -28,7 +28,7 @@ const AddProductForm = ({setModalIsOpen, modalIsOpen}) => {
 
       const imageURL = await getDownloadURL(storageRef);
 
-      const docRef = await addDoc(collection(db, 'userInfo'), {
+      const docRef = await addDoc(collection(db, 'product'), {
         productname: input.productname,
         price: input.price,
         description: input.description,
