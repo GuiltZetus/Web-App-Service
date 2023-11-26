@@ -8,6 +8,8 @@ import Modal from 'react-modal';
 import AddProductForm from './AddProductForm';
 import '../styles/Modal.css';
 
+
+import TestingForm from './AddProductForm.js';
 Modal.setAppElement('#root');
 
 const ProductList = () => {
@@ -15,9 +17,10 @@ const ProductList = () => {
   const [updateItemId, setUpdateItemId] = useState(null);
   const [searchInput, setSearchInput] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [ModalType,setModalType] = useState(null);
+  const [modalType,setModalType] = useState(null);
 
   const openModal = (type, itemID) => {
+    alert(type);
     setModalType(type);
     setModalIsOpen(true);
     if ( type === 'updateProduct'){
@@ -144,20 +147,20 @@ const ProductList = () => {
               <div className="action-buttons">
                 <button onClick={() => handleDelete(item.id, item.imageURL)}>Delete</button>
                 <button onClick={() => openModal('updateProduct', item.id)}>Update</button>
-                {updateItemId === item.id &&  ModalType==='updateProduct'}
+                {updateItemId === item.id &&  modalType==='updateProduct'}
                  {/* AddProductForm Modal */}
-                <Modal isOpen = {modalIsOpen && ModalType === 'addProduct'} 
+                <Modal isOpen = {modalIsOpen && modalType === 'addProduct'} 
                   onRequestClose = {closeModal}
                   contentLabel = "Add Product"
                   overlayClassName= "react-modal-overlay"
                   className = "react-modal-content"
                 >
                   <>
-                    <AddProductForm setModalIsOpen = {closeModal}/>
+                    <TestingForm setModalIsOpen = {closeModal}/>
                   </>
                 </Modal>
                  {/* UpdateForm Modal */}
-                <Modal isOpen = {modalIsOpen && ModalType === 'updateProduct'} 
+                <Modal isOpen = {modalIsOpen && modalType === 'updateProduct'} 
                   onRequestClose = {closeModal}
                   contentLabel = "Update Product"
                   overlayClassName= "react-modal-overlay"
