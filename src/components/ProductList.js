@@ -47,11 +47,10 @@ const ProductList = () => {
               id: childSnapshot.key,
               productname: data.product_name,
               description: data.product_description,
-              stock: data.product_quantity,
               imageURL: data.product_img, // Update to match your actual data structure
               date: data.product_createdDate,
               memoryOptions: [],
-              totalStock : 0,
+              totalStock: 0,
             }
             // fetch options for procduct
             const optionsSnapshot = childSnapshot.child('product_memoryOptions');
@@ -137,7 +136,7 @@ const ProductList = () => {
 
   // Filtered data based on search input
   const filteredData = data.filter((item) =>
-    item.productname.toLowerCase().includes(searchInput.toLowerCase())
+    item.id.toLowerCase().includes(searchInput.toLowerCase())
   );
 
   return (
@@ -156,7 +155,6 @@ const ProductList = () => {
         <div className="item-list-categories">
           <span>ID</span>
           <span>Name</span>
-          <span>Price</span>
           <span>Options</span>
           <span>Description</span>
           <span>Add Date</span>
@@ -167,13 +165,12 @@ const ProductList = () => {
           <li key={item.id} className="list-item">
             <span>{item.id}</span>
             <span>{item.productname}</span>
-            <span>{item.price}</span>
             <span>{item.memoryOptions.length}</span>
             <span>{item.description}</span>
             <span>{item.date}</span>
             <span>{item.totalStock}</span>
             <span>
-              <div className="action-buttons">
+              <div classname="action-buttons">
                 <button onClick={() => handleDelete(item.id, item.imageURL)}>
                   Delete
                 </button>
