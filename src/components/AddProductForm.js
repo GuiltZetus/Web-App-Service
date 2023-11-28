@@ -87,8 +87,7 @@ const AddProductForm = ({setModalIsOpen, modalIsOpen}) => {
       <label>
         Stock:
         <input 
-          type="text"
-          name="stock"
+          type="text" name="stock"
           value={input.stock}
           onChange={handleChange}
           className="form-input"
