@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
-import { push, ref } from 'firebase/database';
+import { push, ref, get, set, query, orderByChild, equalTo } from 'firebase/database';
 import { db } from '../services/firebase';
 import '../styles/MyForm.css';
+import Modal from 'react-modal';
 
 const AddAccountForm = ({ setModalIsOpen }) => {
+    const [error, setError] = useState([]);
   const [newAccount, setNewAccount] = useState({
     user_email: '',
     user_name: '',
     user_password: '',
     user_phone: '',
-    verificationCode: '',
+    user_address: '',
   });
 
+  const handleCloseModal = () => {
+    setModalIsOpen(false);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewAccount((prevAccount) => ({ ...prevAccount, [name]: value }));
@@ -19,7 +24,7 @@ const AddAccountForm = ({ setModalIsOpen }) => {
 
   const isUsernameExists = async (username) => {
     const accountsRef = ref(db, 'User');
-    const usernameQuery = query(accountsRef, orderByChild('username').equalTo(username));
+    const usernameQuery = query(accountsRef, equalTo('user_name', username));
     const snapshot = await get(usernameQuery); 
 
     return snapshot.exists();
@@ -67,7 +72,7 @@ const AddAccountForm = ({ setModalIsOpen }) => {
           name="user_email"
           value={newAccount.user_email}
           onChange={handleChange}
-          required
+          className="form-input"
         />
       </label>
       <br />
@@ -78,6 +83,7 @@ const AddAccountForm = ({ setModalIsOpen }) => {
           name="user_name"
           value={newAccount.user_name}
           onChange={handleChange}
+          className="form-input"
         />
       </label>
       <br />
@@ -88,6 +94,7 @@ const AddAccountForm = ({ setModalIsOpen }) => {
           name="user_password"
           value={newAccount.user_password}
           onChange={handleChange}
+          className="form-input"
         />
       </label>
       <br />
@@ -98,21 +105,26 @@ const AddAccountForm = ({ setModalIsOpen }) => {
           name="user_phone"
           value={newAccount.user_phone}
           onChange={handleChange}
+          className="form-input"
         />
       </label>
       <br />
       <label>
-        Adress:
+        Address:
         <input
           type="text"
-          name="user_adress"
-          value={newAccount.user_adress}
+          name="user_address"
+          value={newAccount.user_address}
           onChange={handleChange}
+          className="form-input"
         />
       </label>
 
       <br />
-      <button type="submit">Add Account</button>
+      <button className="form-button" type="submit" >Add Account</button>
+      <button className="form-button" type="button" onClick={handleCloseModal}>
+        Cancel
+      </button>
     </form>
   );
 };

@@ -8,7 +8,6 @@ import Modal from 'react-modal';
 import AddProductForm from './AddProductForm';
 import '../styles/Modal.css';
 
-import TestingForm from './AddProductForm.js';
 Modal.setAppElement('#root');
 
 const ProductList = () => {
@@ -190,7 +189,7 @@ const ProductList = () => {
                   className="react-modal-content"
                 >
                   <>
-                    <TestingForm setModalIsOpen={closeModal} />
+                    <AddProductForm setModalIsOpen={closeModal} />
                   </>
                 </Modal>
                 {/* UpdateForm Modal */}

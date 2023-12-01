@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { get, ref } from 'firebase/database';
-import { db } from '../services/firebase';
+import { get, ref, remove, update } from 'firebase/database';
+import { db, storage } from '../services/firebase';
 import '../styles/ProductList.css';
 import AddAccountForm from '../components/AddAccountForm.js';
 import Modal from 'react-modal';
+import '../styles/MyForm.css';
 
 Modal.setAppElement('#root');
 
@@ -16,9 +17,6 @@ const AccountList = () => {
   const openModal = (type, itemID) => {
     setModalType(type);
     setModalIsOpen(true);
-    if (type === 'updateProduct') {
-      setUpdateItemId(itemID);
-    }
   };
 
   const closeModal = () => {
@@ -43,7 +41,7 @@ const AccountList = () => {
               name: data.user_name,
               password: data.user_password,
               phone: data.user_phone,
-              adress : data.user_adress,
+              address : data.user_address,
             };
             fetchedData.push(accountData);
           });
@@ -74,6 +72,7 @@ const AccountList = () => {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
+        <button onClick={() => openModal('addAccount')}>Add Account</button>
       </div>
       <ul className="item-list">
         <div className="item-list-categories">
@@ -100,6 +99,17 @@ const AccountList = () => {
               <button>
                 Update
               </button>
+              <Modal
+                isOpen = {modalIsOpen && modalType === 'addAccount'}
+                onRequestClost = {closeModal}
+                contentLabel="Add Account"
+                overlayClassName="react-modal-overlay"
+                className="react-modal-content"
+              >
+                <>
+                  <AddAccountForm setModalIsOpen={closeModal} />
+                </>
+              </Modal>
             </span>
           </li>
         ))}
