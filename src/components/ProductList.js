@@ -50,6 +50,7 @@ const ProductList = () => {
               imageURL: data.product_img, // Update to match your actual data structure
               date: data.product_createdDate,
               memoryOptions: [],
+              category_id: data.category_id,
               totalStock: 0,
             }
             // fetch options for procduct
@@ -61,7 +62,7 @@ const ProductList = () => {
                 productData.memoryOptions.push({
                   memory : options.memory,
                   price : options.product_price,
-                  stock : options.quantity
+                  quantity : options.quantity
                 })
                 optionsTotalStock += options.quantity;
                 productData.totalStock = optionsTotalStock;
@@ -140,7 +141,7 @@ const ProductList = () => {
   );
 
   return (
-    <div className="product-list-container">
+    <div className="list-container">
       <h1 className="title">Product Listing</h1>
       <div className="search-bar">
         <input
@@ -154,6 +155,7 @@ const ProductList = () => {
       <ul className="item-list">
         <div className="item-list-categories">
           <span>ID</span>
+          <span>Category ID</span>
           <span>Name</span>
           <span>Options</span>
           <span>Description</span>
@@ -164,6 +166,7 @@ const ProductList = () => {
         {filteredData.map((item) => (
           <li key={item.id} className="list-item">
             <span>{item.id}</span>
+            <span>{item.category_id}</span>
             <span>{item.productname}</span>
             <span>{item.memoryOptions.length}</span>
             <span>{item.description}</span>
@@ -174,11 +177,11 @@ const ProductList = () => {
                 <button onClick={() => handleDelete(item.id, item.imageURL)}>
                   Delete
                 </button>
-                <button onClick={() => openModal('updateProduct', item.id)}>
-                  Update
-                </button>
-                {updateItemId === item.id && modalType === 'updateProduct'}
-                {/* AddProductForm Modal */}
+                {/* <button onClick={() => openModal('updateProduct', item.id)}> */}
+                {/*   Update */}
+                {/* </button> */}
+                {/* {updateItemId === item.id && modalType === 'updateProduct'} */}
+                {/* {/* AddProductForm Modal */}
                 <Modal
                   isOpen={modalIsOpen && modalType === 'addProduct'}
                   onRequestClose={closeModal}
@@ -191,23 +194,23 @@ const ProductList = () => {
                   </>
                 </Modal>
                 {/* UpdateForm Modal */}
-                <Modal
-                  isOpen={modalIsOpen && modalType === 'updateProduct'}
-                  onRequestClose={closeModal}
-                  contentLabel="Update Product"
-                  overlayClassName="react-modal-overlay"
-                  className="react-modal-content"
-                >
-                  <>
-                    <UpdateProductForm
-                      data={data.find((item) => item.id === updateItemId)}
-                      onUpdate={(updatedData) =>
-                        handleUpdate(item.id, updatedData)
-                      }
-                      setModalIsOpen={closeModal}
-                    />
-                  </>
-                </Modal>
+              {/*   <Modal */}
+              {/*     isOpen={modalIsOpen && modalType === 'updateProduct'} */}
+              {/*     onRequestClose={closeModal} */}
+              {/*     contentLabel="Update Product" */}
+              {/*     overlayClassName="react-modal-overlay" */}
+              {/*     className="react-modal-content" */}
+              {/*   > */}
+              {/*     <> */}
+              {/*       <UpdateProductForm */}
+              {/*         data={data.find((item) => item.id === updateItemId)} */}
+              {/*         onUpdate={(updatedData) => */}
+              {/*           handleUpdate(item.id, updatedData) */}
+              {/*         } */}
+              {/*         setModalIsOpen={closeModal} */}
+              {/*       /> */}
+              {/*     </> */}
+              {/*   </Modal> */}
               </div>
             </span>
           </li>

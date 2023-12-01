@@ -49,7 +49,7 @@ const AddProductForm = ({ setModalIsOpen, modalIsOpen }) => {
     const productsRef = databaseRef(db, 'Products');
     const productsSnapshot = await get(productsRef);
     const productCount = productsSnapshot.exists() ? Object.keys(productsSnapshot.val()).length : 0;
-    return `product_${productCount + 1}`;
+    return `product_${productCount + 2}`;
   };
 
   const handleSubmit = async (e) => {
@@ -72,7 +72,7 @@ const AddProductForm = ({ setModalIsOpen, modalIsOpen }) => {
       }));
 
       await set(databaseRef(db, 'Products/'+ productId), {
-        category_id: 1, // Set your desired category_id
+        category_id: input.category_id, // Set your desired category_id
         product_name : input.productname,
         product_createdDate: new Date().toLocaleDateString(),
         product_description: input.description,
@@ -106,6 +106,17 @@ const AddProductForm = ({ setModalIsOpen, modalIsOpen }) => {
           value={input.productname}
           onChange={(e) => handleChange(e)}
           className="form-input"
+        />
+      </label>
+      <br />
+      <label>
+        Category ID:
+        <input
+        type = "text"
+        name="categoryid"
+        value={input.categoryid}
+        onChange={(e) => handleChange(e)}
+        className="form-input"
         />
       </label>
       <br />
