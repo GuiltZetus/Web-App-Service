@@ -5,7 +5,7 @@ import { db, storage } from '../services/firebase';
 import '../styles/MyForm.css'; // Import your CSS file
 import Modal from 'react-modal';
 
-const AddProductForm = ({ setModalIsOpen, modalIsOpen }) => {
+const AddProductForm = ({ setModalIsOpen, modalIsOpen, onProductAdded }) => {
   const [input, setInputs] = useState({
     productname: '',
     description: '',
@@ -46,10 +46,32 @@ const AddProductForm = ({ setModalIsOpen, modalIsOpen }) => {
   };
 
   const generateProductId = async () => {
-    const productsRef = databaseRef(db, 'Products');
-    const productsSnapshot = await get(productsRef);
-    const productCount = productsSnapshot.exists() ? Object.keys(productsSnapshot.val()).length : 0;
-    return `product_${productCount + 2}`;
+    try {
+      const productsRef = databaseRef(db, 'Products');
+      const productsSnapshot = await get(productsRef);
+
+      if (productsSnapshot.exists()) {
+        // Extract product IDs from the snapshot
+        const productIds = Object.keys(productsSnapshot.val());
+
+        // Find the maximum product ID
+        const maxProductId = productIds.reduce((maxId, productId) => {
+          const productIdNumber = parseInt(productId.replace('product_', ''), 10);
+          return productIdNumber > maxId ? productIdNumber : maxId;
+        }, 0);
+
+        // Generate a new product ID by incrementing the maximum ID
+        const newProductId = `product_${maxProductId + 1}`;
+        return newProductId;
+      } else {
+        // If there are no existing products, generate the first product ID
+        return 'product_1';
+      }
+    } catch (error) {
+      console.error('Error generating product ID:', error.message);
+      // Handle the error appropriately, e.g., throw an error or return a default value
+      throw error;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -84,6 +106,7 @@ const AddProductForm = ({ setModalIsOpen, modalIsOpen }) => {
         productname: '',
         price: '',
         description: '',
+        category_id: '',
         stock: '',
         image: null,
         options: [{ memory: '', price: '', stock: '' }],
@@ -113,8 +136,8 @@ const AddProductForm = ({ setModalIsOpen, modalIsOpen }) => {
         Category ID:
         <input
         type = "text"
-        name="categoryid"
-        value={input.categoryid}
+        name="category_id"
+        value={input.category_id}
         onChange={(e) => handleChange(e)}
         className="form-input"
         />

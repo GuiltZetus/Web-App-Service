@@ -31,48 +31,50 @@ const ProductList = () => {
     setModalIsOpen(false);
   };
 
-  // Fetch data from Realtime Database
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const dataRef = ref(db, 'Products'); // Assuming products are stored under 'Product' node
-        const dataSnapshot = await get(dataRef);
+  const handleProductAdded = () => {
+    fetchData();
+  };
 
-        if (dataSnapshot.exists()) {
-          const fetchedData = [];
-          dataSnapshot.forEach((childSnapshot) => {
-            const data = childSnapshot.val();
-            const productData = {
-              id: childSnapshot.key,
-              productname: data.product_name,
-              description: data.product_description,
-              imageURL: data.product_img, // Update to match your actual data structure
-              date: data.product_createdDate,
-              memoryOptions: [],
-              category_id: data.category_id,
-              totalStock: 0,
-            }
-            // fetch options for procduct
-            const optionsSnapshot = childSnapshot.child('product_memoryOptions');
-            if (optionsSnapshot.exists()) {
-              let optionsTotalStock = 0;
-              optionsSnapshot.forEach((childSnapshot) => {
-                const options = childSnapshot.val();
-                productData.memoryOptions.push({
-                  memory : options.memory,
-                  price : options.product_price,
-                  quantity : options.quantity
-                })
-                optionsTotalStock += options.quantity;
-                productData.totalStock = optionsTotalStock;
+  const fetchData = async () => {
+    try {
+      const dataRef = ref(db, 'Products'); // Assuming products are stored under 'Product' node
+      const dataSnapshot = await get(dataRef);
+
+      if (dataSnapshot.exists()) {
+        const fetchedData = [];
+        dataSnapshot.forEach((childSnapshot) => {
+          const data = childSnapshot.val();
+          const productData = {
+            id: childSnapshot.key,
+            productname: data.product_name,
+            description: data.product_description,
+            imageURL: data.product_img, // Update to match your actual data structure
+            date: data.product_createdDate,
+            memoryOptions: [],
+            category_id: data.category_id,
+            totalStock: 0,
+          }
+          // fetch options for procduct
+          const optionsSnapshot = childSnapshot.child('product_memoryOptions');
+          if (optionsSnapshot.exists()) {
+            let optionsTotalStock = 0;
+            optionsSnapshot.forEach((childSnapshot) => {
+              const options = childSnapshot.val();
+              productData.memoryOptions.push({
+                memory : options.memory,
+                price : options.product_price,
+                quantity : options.quantity
               })
-            }
-            fetchedData.push(productData);
-          });
-          const totalOptionsCount = fetchedData.map((product) => ({
-            id: product.id,
-            optionsCount : product.memoryOptions.length,
-          }));
+              optionsTotalStock += options.quantity;
+              productData.totalStock = optionsTotalStock;
+            })
+          }
+          fetchedData.push(productData);
+        });
+        const totalOptionsCount = fetchedData.map((product) => ({
+          id: product.id,
+          optionsCount : product.memoryOptions.length,
+        }));
         setData(fetchedData);
         setOptionsCount(totalOptionsCount);
       }
@@ -81,8 +83,10 @@ const ProductList = () => {
     }
   };
 
+  // Fetch data from Realtime Database
+  useEffect(() => {
     fetchData();
-  }, []);
+  }, [handleProductAdded]);
 
   // Update Data function
   const handleUpdate = async (id, updatedData) => {
@@ -136,7 +140,7 @@ const ProductList = () => {
 
   // Filtered data based on search input
   const filteredData = data.filter((item) =>
-    item.id.toLowerCase().includes(searchInput.toLowerCase())
+    item.productname.toLowerCase().includes(searchInput.toLowerCase())
   );
 
   return (

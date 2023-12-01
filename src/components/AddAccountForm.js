@@ -4,8 +4,8 @@ import { db } from '../services/firebase';
 import '../styles/MyForm.css';
 import Modal from 'react-modal';
 
-const AddAccountForm = ({ setModalIsOpen }) => {
-    const [error, setError] = useState([]);
+const AddAccountForm = ({ setModalIsOpen, onAccountAdded }) => {
+  const [error, setError] = useState('');
   const [newAccount, setNewAccount] = useState({
     user_email: '',
     user_name: '',
@@ -55,6 +55,7 @@ const AddAccountForm = ({ setModalIsOpen }) => {
       if (newAccountSnapshot.key) {
         console.log('Account added successfully!');
         setModalIsOpen(false);
+        onAccountAdded();
       } else {
         console.error('Error adding account.');
       }

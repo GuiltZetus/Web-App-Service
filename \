@@ -37,24 +37,14 @@ const AccountList = () => {
     fetchData();
   };
 
-  const handleDelete = async (accountId) => {
-    try{
-      await remove(ref(db,`User/${accountId}`));
-      setData((prevData) => prevData.filter((item) => item.id !==accountId));
-    }
-    catch (error){
-      console.error('Error deleting data:', error.message);
-    }
-  };
-
   const fetchData = async () => {
-  try {
-    const dataRef = ref(db, 'User');
-    const dataSnapshot = await get(dataRef);
+    try {
+      const dataRef = ref(db, 'User');
+      const dataSnapshot = await get(dataRef);
 
-    if (dataSnapshot.exists()) {
-      const fetchedData = [];
-      dataSnapshot.forEach((childSnapshot) => {
+      if (dataSnapshot.exists()) {
+        const fetchedData = [];
+        dataSnapshot.forEach((childSnapshot) => {
           const data = childSnapshot.val();
           const accountData = {
             id: childSnapshot.key,
@@ -82,7 +72,7 @@ const AccountList = () => {
 
   // Filtered data based on search input
   const filteredData = data.filter((item) =>
-    item.name.toLowerCase().includes(searchInput.toLowerCase())
+    item.name.includes(searchInput.toLowerCase())
   );
 
   return (
@@ -91,7 +81,7 @@ const AccountList = () => {
       <div className="search-bar">
         <input
           type="text"
-          placeholder="Search by Username"
+          placeholder="Search by Email or Name"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
@@ -116,7 +106,7 @@ const AccountList = () => {
             <span>{item.phone}</span>
             <span>{item.address}</span>
             <span>
-              <button onClick={() => handleDelete(item.id)}>
+              <button>
                 Delete
               </button>
               <button onClick={() => openModal('updateAccount', item.id)}>
