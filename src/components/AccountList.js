@@ -116,12 +116,13 @@ const AccountList = () => {
             <span>{item.phone}</span>
             <span>{item.address}</span>
             <span>
+             <button onClick={() => openModal('updateAccount', item.id)}>
+                Update
+              </button>
               <button onClick={() => handleDelete(item.id)}>
                 Delete
               </button>
-              <button onClick={() => openModal('updateAccount', item.id)}>
-                Update
-              </button>
+
               {/* Add Account Modal */}
               <Modal
                 isOpen = {modalIsOpen && modalType === 'addAccount'}

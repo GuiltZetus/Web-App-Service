@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { get, ref } from 'firebase/database';
+import { get, ref, remove } from 'firebase/database';
 import { db } from '../services/firebase';
 import Modal from 'react-modal';
 import '../styles/MyForm.css';
@@ -53,6 +53,17 @@ const OrderList = () => {
     fetchData();
   }, []);
 
+
+  const handleDelete = async (orderId) => {
+    try {
+      await remove(ref(db,`Order/${orderId}`));
+      setData((prevData) => prevData.filter((item) => item.id !== orderId));
+    }
+    catch (error) {
+      console.error('Error deleting data:', error.message);
+    }
+  };
+
   // Filtered data based on search input
   const filteredData = data.filter(
     (item) =>
@@ -89,6 +100,7 @@ const OrderList = () => {
             <span>{item.totalAmount}</span>
             <span>
               <button onClick={() => openModal('updateOrder')}>Update</button>
+              <button onClick={() => handleDelete(item.id)}>Delete</button>
             </span>
           </li>
         ))}
