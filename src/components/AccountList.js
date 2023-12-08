@@ -58,15 +58,10 @@ const AccountList = () => {
           const data = childSnapshot.val();
           const accountData = {
             id: childSnapshot.key,
-            email: data.user_email,
-            name: data.user_name,
-            password: data.user_password,
-            phone: data.user_phone,
-            address : data.user_address,
+            name: data.userName,
           };
           fetchedData.push(accountData);
         });
-
         // Update the state to reflect the changes
         setData(fetchedData);
       }
@@ -100,21 +95,13 @@ const AccountList = () => {
       <ul className="item-list">
         <div className="item-list-categories">
           <span>ID</span>
-          <span>Email</span>
           <span>Name</span>
-          <span>Password</span>
-          <span>Phone Number</span>
-          <span>Adress</span>
           <span>Edit</span>
         </div>
         {filteredData.map((item) => (
           <li key={item.id} className="list-item">
             <span>{item.id}</span>
-            <span>{item.email}</span>
             <span>{item.name}</span>
-            <span>{item.password}</span>
-            <span>{item.phone}</span>
-            <span>{item.address}</span>
             <span>
               <button onClick={() => handleDelete(item.id)}>
                 Delete

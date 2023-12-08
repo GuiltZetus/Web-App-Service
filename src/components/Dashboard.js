@@ -4,6 +4,7 @@ import AddProductForm from './AddProductForm'; // Replace with the correct path 
 import ProductList from './ProductList'; // Replace with the correct path to your MyList component
 import AccountList from './AccountList';
 import OrderList from './OrderList';
+import CartList from './CartList.js';
 import '../styles/Dashboard.css';
 const Dashboard = () => {
   return (
@@ -13,6 +14,7 @@ const Dashboard = () => {
             <Link to="/productlist">Item List</Link>
             <Link to="/accountlist">Account List </Link>
             <Link to="/orderlist">Order List</Link>
+          <Link to="/cartlist">Cart List</Link>
           </li> 
         </ul>
       </div>
