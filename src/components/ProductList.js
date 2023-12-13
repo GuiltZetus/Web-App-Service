@@ -37,7 +37,7 @@ const ProductList = () => {
 
   const fetchData = async () => {
     try {
-      const dataRef = ref(db, 'Products'); // Assuming products are stored under 'Product' node
+      const dataRef = ref(db, 'Products_2'); // Assuming products are stored under 'Product' node
       const dataSnapshot = await get(dataRef);
 
       if (dataSnapshot.exists()) {
@@ -51,7 +51,7 @@ const ProductList = () => {
             imageURL: data.product_img, // Update to match your actual data structure
             date: data.product_createdDate,
             memoryOptions: [],
-            category_id: data.category_id,
+            category_id: data.product_categoryId,
             totalStock: 0,
           }
           // fetch options for procduct

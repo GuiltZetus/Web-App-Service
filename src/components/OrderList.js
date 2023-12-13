@@ -34,10 +34,10 @@ const OrderList = () => {
             const data = childSnapshot.val();
             const orderData = {
               id: childSnapshot.key,
-              buyerId: data.buyder_id,
+              buyerId: data.buyer_id,
               orderDate: data.order_date,
               status: data.status,
-              totalAmount: data.total_amout,
+              totalAmount: data.total_amount,
             };
             fetchedData.push(orderData);
           });
@@ -92,8 +92,8 @@ const OrderList = () => {
           <span>Edit</span>
         </div>
         {filteredData.map((item) => (
-          <li key={item.orderId} className="list-item">
-            <span>{item.orderId}</span>
+          <li key={item.id} className="list-item">
+            <span>{item.id}</span>
             <span>{item.buyerId}</span>
             <span>{item.orderDate}</span>
             <span>{item.status}</span>

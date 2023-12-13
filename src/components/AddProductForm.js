@@ -47,7 +47,7 @@ const AddProductForm = ({ setModalIsOpen, modalIsOpen, onProductAdded }) => {
 
   const generateProductId = async () => {
     try {
-      const productsRef = databaseRef(db, 'Products');
+      const productsRef = databaseRef(db, 'Products_2');
       const productsSnapshot = await get(productsRef);
 
       if (productsSnapshot.exists()) {
@@ -61,11 +61,11 @@ const AddProductForm = ({ setModalIsOpen, modalIsOpen, onProductAdded }) => {
         }, 0);
 
         // Generate a new product ID by incrementing the maximum ID
-        const newProductId = `product_${maxProductId + 1}`;
+        const newProductId = maxProductId + 1;
         return newProductId;
       } else {
         // If there are no existing products, generate the first product ID
-        return 'product_1';
+        return 'product_101';
       }
     } catch (error) {
       console.error('Error generating product ID:', error.message);
@@ -93,8 +93,9 @@ const AddProductForm = ({ setModalIsOpen, modalIsOpen, onProductAdded }) => {
         },
       }));
 
-      await set(databaseRef(db, 'Products/'+ productId), {
-        category_id: input.category_id, // Set your desired category_id
+      await set(databaseRef(db, 'Products_2/'+ `product_${productId}`), {
+        product_categoryId: Number(input.category_id), // Set your desired category_id
+        product_id: productId,
         product_name : input.productname,
         product_createdDate: new Date().toLocaleDateString(),
         product_description: input.description,

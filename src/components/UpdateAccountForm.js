@@ -50,55 +50,11 @@ const UpdateAccountForm = ({ accountId, setModalIsOpen, onAccountUpdate }) => {
   return (
     <form className="my-form" onSubmit={handleSubmit}>
       <label>
-        Email:
-        <input
-          type="email"
-          name="user_email"
-          value={updatedAccount.user_email || ''}
-          onChange={handleChange}
-          className="form-input"
-        />
-      </label>
-      <br />
-      <label>
         Name:
         <input
           type="text"
-          name="user_name"
-          value={updatedAccount.user_name || ''}
-          onChange={handleChange}
-          className="form-input"
-        />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input
-          type="password"
-          name="user_password"
-          value={updatedAccount.user_password || ''}
-          onChange={handleChange}
-          className="form-input"
-        />
-      </label>
-      <br />
-      <label>
-        Phone:
-        <input
-          type="tel"
-          name="user_phone"
-          value={updatedAccount.user_phone || ''}
-          onChange={handleChange}
-          className="form-input"
-        />
-      </label>
-      <br />
-      <label>
-        Address:
-        <input
-          type="text"
-          name="user_address"
-          value={updatedAccount.user_address || ''}
+          name="userName"
+          value={updatedAccount.userName || ''}
           onChange={handleChange}
           className="form-input"
         />
