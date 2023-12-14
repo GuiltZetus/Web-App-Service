@@ -38,6 +38,10 @@ const OrderList = () => {
               orderDate: data.order_date,
               status: data.status,
               totalAmount: data.total_amount,
+              paymentMethod: data.paymentMethod,
+              shippingAddress: data.shippingAddress,
+              phoneNumber : data.phoneNumber,
+              deliveryMethod: data.deliveryMethod,
             };
             fetchedData.push(orderData);
           });
@@ -88,8 +92,9 @@ const OrderList = () => {
           <span>Buyer ID</span>
           <span>Order Date</span>
           <span>Status</span>
+          <span>Adress</span>
+          <span>Number</span>
           <span>Total Amount</span>
-          <span>Edit</span>
         </div>
         {filteredData.map((item) => (
           <li key={item.id} className="list-item">
@@ -97,6 +102,8 @@ const OrderList = () => {
             <span>{item.buyerId}</span>
             <span>{item.orderDate}</span>
             <span>{item.status}</span>
+            <span> {item.shippingAddress}</span>
+            <span>{item.phoneNumber}</span>
             <span>{item.totalAmount}</span>
             <span>
               <button onClick={() => openModal('updateOrder')}>Update</button>
